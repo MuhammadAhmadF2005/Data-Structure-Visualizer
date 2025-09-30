@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            background-color: #0056b3;
+        }
+
+        .nav-link:active {
+            background-color: #004085;
+        }
+
+        .stack-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .stack-visualization {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            margin: 30px 0;
+            min-height: 300px;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .stack-element {
+            width: 120px;
+            height: 50px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stack-element.top {
+            background-color: #4CAF50;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .stack-element.highlight {
+            background-color: #2196F3;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .stack-label {
+            position: absolute;
+            right: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .stack-element.top .stack-label {
+            color: #4CAF50;
+        }
+
+        .empty-stack {
+            color: #999;
+            font-style: italic;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            width: 120px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 80px;
+            transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .result-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            min-height: 50px;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        .result-display.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .result-display.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .result-display.info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+
+        .stack-info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .stack-container {
+                padding: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .control-group {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                width: 100%;
+                max-width: 250px;
+            }
+
+            button {
+                padding: 12px 24px;
+                font-size: 18px;
+                min-height: 48px;
+                width: 100%;
+            }
+
+            input[type="number"] {
+                padding: 12px 16px;
+                font-size: 18px;
+                width: 100%;
+                min-height: 48px;
+            }
+
+            .stack-element {
+                width: 100px;
+                height: 45px;
+                font-size: 16px;
+            }
+
+            .stack-label {
+                right: -70px;
+                font-size: 12px;
+            }
+
+            .nav-link {
+                padding: 12px 24px;
+                font-size: 16px;
+                min-height: 48px;
+            }
+
+            .stack-visualization {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Stack Visualizer</h1>
+        <p>Visualize stack operations: Push, Pop, and Peek (LIFO - Last In, First Out)</p>
+    </div>
+
+    <div class="navigation">
+        <a href="index.html" class="nav-link">← Back to Menu</a>
+    </div>
+
+    <div class="stack-container">
+        <h3>Stack Visualization</h3>
+        <div class="stack-info">
+            <strong>LIFO Principle:</strong> Last element pushed is the first to be popped (top of stack)
+        </div>
+
+        <div class="stack-visualization" id="stackVisualization">
+            <!-- Stack elements will be displayed here -->
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <input type="number" id="pushValue" placeholder="Value" min="0" max="999">
+                <button class="btn-success" onclick="pushElement()">Push</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-danger" onclick="popElement()">Pop</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-info" onclick="peekElement()">Peek</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-primary" onclick="clearHighlight()">Clear Highlight</button>
+            </div>
+        </div>
+
+        <div class="result-display" id="resultDisplay">
+            Ready to perform stack operations. Current stack: [10, 20, 30] (top: 30)
+        </div>
+    </div>
+
+    <script>
+        // Initialize stack with sample data matching code.cpp pattern
+        let stackData = [10, 20, 30];
+        const maxElements = 10;
+
+        // Initialize display
+        updateDisplay();
+        showResult("Ready to perform stack operations. Current stack: [" + stackData.join(", ") + "] (top: " + (stackData.length > 0 ? stackData[stackData.length - 1] : "none") + ")", "info");
+
+        function updateDisplay() {
+            const container = document.getElementById('stackVisualization');
+            container.innerHTML = '';
+
+            if (stackData.length === 0) {
+                container.innerHTML = '<div class="empty-stack">Stack is empty</div>';
+                return;
+            }
+
+            // Display stack elements from bottom to top (array index 0 = bottom)
+            stackData.forEach((value, index) => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = 'stack-element';
+                elementDiv.id = `stack-element-${index}`;
+
+                // Mark the top element (last in array)
+                if (index === stackData.length - 1) {
+                    elementDiv.classList.add('top');
+                    elementDiv.innerHTML = `${value}<span class="stack-label">← TOP</span>`;
+                } else {
+                    elementDiv.innerHTML = `${value}`;
+                }
+
+                container.appendChild(elementDiv);
+            });
+        }
+
+        function pushElement() {
+            const input = document.getElementById('pushValue');
+            const value = parseInt(input.value);
+
+            if (isNaN(value)) {
+                showResult("Error: Please enter a valid number", "error");
+                return;
+            }
+
+            if (stackData.length >= maxElements) {
+                showResult("Error: Stack is full (maximum " + maxElements + " elements)", "error");
+                return;
+            }
+
+            // Push element to top of stack (end of array)
+            stackData.push(value);
+            updateDisplay();
+            showResult("Successfully pushed " + value + " onto the stack. New top: " + value, "success");
+
+            // Clear input
+            input.value = '';
+        }
+
+        function popElement() {
+            if (stackData.length === 0) {
+                showResult("Error: Stack is empty - cannot pop", "error");
+                return;
+            }
+
+            // Pop element from top of stack (end of array)
+            const poppedValue = stackData.pop();
+            updateDisplay();
+
+            const newTop = stackData.length > 0 ? stackData[stackData.length - 1] : "none";
+            showResult("Successfully popped " + poppedValue + " from the stack. New top: " + newTop, "success");
+        }
+
+        function peekElement() {
+            if (stackData.length === 0) {
+                showResult("Error: Stack is empty - cannot peek", "error");
+                return;
+            }
+
+            // Clear previous highlights
+            clearHighlight();
+
+            // Get top element (last in array)
+            const topValue = stackData[stackData.length - 1];
+            const topElement = document.getElementById(`stack-element-${stackData.length - 1}`);
+
+            if (topElement) {
+                topElement.classList.add('highlight');
+            }
+
+            showResult("Top element (peek): " + topValue, "info");
+        }
+
+        function clearHighlight() {
+            const highlightedElements = document.querySelectorAll('.stack-element.highlight');
+            highlightedElements.forEach(element => {
+                element.classList.remove('highlight');
+            });
+
+            const topValue = stackData.length > 0 ? stackData[stackData.length - 1] : "none";
+            showResult("Highlight cleared. Current stack: [" + stackData.join(", ") + "] (top: " + topValue + ")", "info");
+        }
+
+        function showResult(message, type = "info") {
+            const resultDiv = document.getElementById('resultDisplay');
+            resultDiv.textContent = message;
+
+            // Remove all type classes
+            resultDiv.classList.remove('success', 'error', 'info');
+
+            // Add the appropriate type class
+            if (type) {
+                resultDiv.classList.add(type);
+            }
+        }
+
+        // Handle Enter key for input
+        document.getElementById('pushValue').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                pushElement();
+            }
+        });
+    </script>
+</body>
+
+</html>

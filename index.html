@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structure Visualizer</title>
+    <!-- 
+        EDUCATIONAL NOTE: This is the main navigation page for the Data Structure Visualizer.
+        It provides links to individual visualizers for Arrays, Stacks, Queues, Linked Lists, and Binary Trees.
+        
+        The design uses:
+        - CSS Grid for responsive card layout
+        - Flexbox for internal card alignment  
+        - CSS transitions for smooth hover effects
+        - Mobile-first responsive design principles
+    -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .nav-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #4CAF50;
+        }
+
+        .nav-card h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .nav-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .nav-card {
+                padding: 25px 20px;
+                min-height: 120px;
+            }
+
+            .nav-card h3 {
+                font-size: 1.3em;
+            }
+
+            .nav-card p {
+                font-size: 0.9em;
+            }
+
+            .icon {
+                font-size: 2.5em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 0.9em;
+            }
+
+            .nav-grid {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .nav-card {
+                padding: 20px 15px;
+            }
+
+            .nav-card h3 {
+                font-size: 1.2em;
+            }
+
+            .icon {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Data Structure Visualizer</h1>
+            <p>Interactive visualizations of fundamental data structures</p>
+        </div>
+
+        <!-- 
+            EDUCATIONAL NOTE: Navigation Grid
+            Each card represents a fundamental data structure with:
+            - Visual icon for quick recognition
+            - Brief description of key concepts
+            - Link to dedicated visualizer page
+            
+            The grid layout automatically adjusts for different screen sizes
+            using CSS Grid's auto-fit and minmax functions.
+        -->
+        <div class="nav-grid">
+            <!-- Array Visualizer - Demonstrates index-based access and dynamic resizing -->
+            <a href="simple-array.html" class="nav-card">
+                <div class="icon">📊</div>
+                <h3>Array</h3>
+                <p>Visualize arrays with their elements and indices. Learn how array operations work including adding,
+                    removing, and accessing elements by index.</p>
+            </a>
+
+            <!-- Stack Visualizer - Demonstrates LIFO (Last-In-First-Out) principle -->
+            <a href="simple-stack.html" class="nav-card">
+                <div class="icon">📚</div>
+                <h3>Stack</h3>
+                <p>Understand the Last-In-First-Out (LIFO) principle with stack operations including push, pop, and
+                    peek. See how elements are added and removed from the top.</p>
+            </a>
+
+            <!-- Queue Visualizer - Demonstrates FIFO (First-In-First-Out) principle -->
+            <a href="simple-queue.html" class="nav-card">
+                <div class="icon">🚶</div>
+                <h3>Queue</h3>
+                <p>Learn the First-In-First-Out (FIFO) principle with queue operations including enqueue, dequeue,
+                    front, and rear. Visualize how elements flow through the queue.</p>
+            </a>
+
+            <!-- Linked List Visualizer - Demonstrates pointer-based data structures -->
+            <a href="simple-linkedlist.html" class="nav-card">
+                <div class="icon">🔗</div>
+                <h3>Linked List</h3>
+                <p>Explore pointer-based data structures with linked list operations including insert, delete, and
+                    traverse. See how nodes are connected through pointers.</p>
+            </a>
+
+            <!-- Binary Tree Visualizer - Demonstrates hierarchical data and traversal algorithms -->
+            <a href="simple-tree.html" class="nav-card">
+                <div class="icon">🌳</div>
+                <h3>Binary Tree</h3>
+                <p>Understand hierarchical data structures with binary tree traversals including preorder, inorder, and
+                    postorder. Visualize how tree algorithms work.</p>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>Built with vanilla HTML, CSS, and JavaScript | Educational Data Structure Visualizations</p>
+        </div>
+    </div>
+</body>
+
+</html>

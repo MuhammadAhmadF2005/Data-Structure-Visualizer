@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            background-color: #0056b3;
+        }
+
+        .nav-link:active {
+            background-color: #004085;
+        }
+
+        .queue-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .queue-visualization {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            min-height: 150px;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+        }
+
+        .queue-element {
+            width: 80px;
+            height: 60px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 0 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .queue-element.front {
+            background-color: #4CAF50;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .queue-element.rear {
+            background-color: #FF9800;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+        }
+
+        .queue-element.highlight {
+            background-color: #2196F3;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .queue-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .queue-element.front .queue-label {
+            color: #4CAF50;
+        }
+
+        .queue-element.rear .queue-label {
+            color: #FF9800;
+        }
+
+        .queue-arrows {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .arrow-left {
+            margin-right: 10px;
+        }
+
+        .arrow-right {
+            margin-left: 10px;
+        }
+
+        .empty-queue {
+            color: #999;
+            font-style: italic;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 80px;
+            transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .result-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            min-height: 50px;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        .result-display.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .result-display.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .result-display.info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+
+        .queue-info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .queue-container {
+                padding: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .control-group {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                width: 100%;
+                max-width: 250px;
+            }
+
+            button {
+                padding: 12px 24px;
+                font-size: 18px;
+                min-height: 48px;
+                width: 100%;
+            }
+
+            input[type="number"] {
+                padding: 12px 16px;
+                font-size: 18px;
+                width: 100%;
+                min-height: 48px;
+            }
+
+            .queue-visualization {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .queue-element {
+                width: 70px;
+                height: 50px;
+                font-size: 16px;
+                margin: 2px;
+            }
+
+            .nav-link {
+                padding: 12px 24px;
+                font-size: 16px;
+                min-height: 48px;
+            }
+
+            .queue-arrows {
+                font-size: 12px;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .queue-visualization {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Queue Visualizer</h1>
+        <p>Visualize queue operations: Enqueue, Dequeue, Front, and Rear (FIFO - First In, First Out)</p>
+    </div>
+
+    <div class="navigation">
+        <a href="index.html" class="nav-link">← Back to Menu</a>
+    </div>
+
+    <div class="queue-container">
+        <h3>Queue Visualization</h3>
+        <div class="queue-info">
+            <strong>FIFO Principle:</strong> First element enqueued is the first to be dequeued (front of queue)
+        </div>
+
+        <div class="queue-arrows">
+            <span class="arrow-left">← Dequeue (Front)</span>
+            <span style="flex: 1; text-align: center;">Queue Direction</span>
+            <span class="arrow-right">Enqueue (Rear) →</span>
+        </div>
+
+        <div class="queue-visualization" id="queueVisualization">
+            <!-- Queue elements will be displayed here -->
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <input type="number" id="enqueueValue" placeholder="Value" min="0" max="999">
+                <button class="btn-success" onclick="enqueueElement()">Enqueue</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-danger" onclick="dequeueElement()">Dequeue</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-info" onclick="frontElement()">Front</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-warning" onclick="rearElement()">Rear</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-primary" onclick="clearHighlight()">Clear Highlight</button>
+            </div>
+        </div>
+
+        <div class="result-display" id="resultDisplay">
+            Ready to perform queue operations. Current queue: [10, 20, 30] (front: 10, rear: 30)
+        </div>
+    </div>
+
+    <script>
+        /*
+            EDUCATIONAL NOTE: Queue Data Structure Implementation
+            
+            This JavaScript implementation mirrors the C++ queue operations from code.cpp:
+            - C++ queue<int> q → JavaScript let queueData = [] (using array as queue)
+            - C++ q.push(value) → JavaScript queueData.push(value) (enqueue)
+            - C++ q.pop() → JavaScript queueData.shift() (dequeue)
+            - C++ q.front() → JavaScript queueData[0] (front element)
+            - C++ q.back() → JavaScript queueData[queueData.length - 1] (rear element)
+            
+            Key Queue Concepts Demonstrated:
+            1. FIFO (First-In-First-Out) principle - first element added is first removed
+            2. Two-ended operations: enqueue at rear, dequeue from front
+            3. Front and rear pointers (simulated with array indices)
+            4. Queue full and empty conditions
+        */
+
+        // Initialize queue with sample data matching code.cpp pattern
+        let queueData = [10, 20, 30];
+        const maxElements = 10; // Limit for visualization purposes
+
+        // Initialize display
+        updateDisplay();
+        showResult("Ready to perform queue operations. Current queue: [" + queueData.join(", ") + "] (front: " + (queueData.length > 0 ? queueData[0] : "none") + ", rear: " + (queueData.length > 0 ? queueData[queueData.length - 1] : "none") + ")", "info");
+
+        function updateDisplay() {
+            const container = document.getElementById('queueVisualization');
+            container.innerHTML = '';
+
+            if (queueData.length === 0) {
+                container.innerHTML = '<div class="empty-queue">Queue is empty</div>';
+                return;
+            }
+
+            // Display queue elements from front to rear (left to right)
+            queueData.forEach((value, index) => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = 'queue-element';
+                elementDiv.id = `queue-element-${index}`;
+
+                // Mark front element (first in array)
+                if (index === 0) {
+                    elementDiv.classList.add('front');
+                    elementDiv.innerHTML = `${value}<span class="queue-label">FRONT</span>`;
+                }
+                // Mark rear element (last in array)
+                else if (index === queueData.length - 1) {
+                    elementDiv.classList.add('rear');
+                    elementDiv.innerHTML = `${value}<span class="queue-label">REAR</span>`;
+                }
+                // Regular elements
+                else {
+                    elementDiv.innerHTML = `${value}`;
+                }
+
+                container.appendChild(elementDiv);
+            });
+        }
+
+        /*
+            EDUCATIONAL NOTE: Enqueue Operation
+            
+            Enqueue adds an element to the rear (back) of the queue:
+            - New elements always join at the rear
+            - Maintains FIFO ordering - this element will be dequeued last
+            - Uses JavaScript push() to add to end of array
+            - Updates both visual display and front/rear indicators
+            
+            Time Complexity: O(1) - Adding to end of array is constant time
+            Real-world analogy: Person joining the back of a line
+        */
+        function enqueueElement() {
+            const input = document.getElementById('enqueueValue');
+            const value = parseInt(input.value);
+
+            // Input validation
+            if (isNaN(value)) {
+                showResult("Error: Please enter a valid number", "error");
+                return;
+            }
+
+            // Check queue capacity
+            if (queueData.length >= maxElements) {
+                showResult("Error: Queue is full (maximum " + maxElements + " elements)", "error");
+                return;
+            }
+
+            // Enqueue element to rear of queue (end of array)
+            queueData.push(value);
+            updateDisplay();
+
+            // Show current front and rear elements
+            const front = queueData[0];
+            const rear = queueData[queueData.length - 1];
+            showResult("Successfully enqueued " + value + " to the queue. Front: " + front + ", Rear: " + rear, "success");
+
+            // Clear input field
+            input.value = '';
+        }
+
+        /*
+            EDUCATIONAL NOTE: Dequeue Operation
+            
+            Dequeue removes an element from the front of the queue:
+            - Always removes the oldest element (FIFO principle)
+            - Uses JavaScript shift() to remove from beginning of array
+            - Updates front pointer to next element in line
+            - Returns the removed value to the user
+            
+            Time Complexity: O(n) - shift() requires moving all remaining elements
+            Note: In real implementations, circular buffers avoid this overhead
+            Real-world analogy: Person leaving the front of a line
+        */
+        function dequeueElement() {
+            // Check for empty queue
+            if (queueData.length === 0) {
+                showResult("Error: Queue is empty - cannot dequeue", "error");
+                return;
+            }
+
+            // Dequeue element from front of queue (beginning of array)
+            const dequeuedValue = queueData.shift();
+            updateDisplay();
+
+            // Update front and rear indicators
+            const front = queueData.length > 0 ? queueData[0] : "none";
+            const rear = queueData.length > 0 ? queueData[queueData.length - 1] : "none";
+            showResult("Successfully dequeued " + dequeuedValue + " from the queue. New front: " + front + ", Rear: " + rear, "success");
+        }
+
+        function frontElement() {
+            if (queueData.length === 0) {
+                showResult("Error: Queue is empty - cannot access front", "error");
+                return;
+            }
+
+            // Clear previous highlights
+            clearHighlight();
+
+            // Get front element (first in array)
+            const frontValue = queueData[0];
+            const frontElement = document.getElementById('queue-element-0');
+
+            if (frontElement) {
+                frontElement.classList.add('highlight');
+            }
+
+            showResult("Front element: " + frontValue, "info");
+        }
+
+        function rearElement() {
+            if (queueData.length === 0) {
+                showResult("Error: Queue is empty - cannot access rear", "error");
+                return;
+            }
+
+            // Clear previous highlights
+            clearHighlight();
+
+            // Get rear element (last in array)
+            const rearValue = queueData[queueData.length - 1];
+            const rearElement = document.getElementById(`queue-element-${queueData.length - 1}`);
+
+            if (rearElement) {
+                rearElement.classList.add('highlight');
+            }
+
+            showResult("Rear element: " + rearValue, "info");
+        }
+
+        function clearHighlight() {
+            const highlightedElements = document.querySelectorAll('.queue-element.highlight');
+            highlightedElements.forEach(element => {
+                element.classList.remove('highlight');
+            });
+
+            const front = queueData.length > 0 ? queueData[0] : "none";
+            const rear = queueData.length > 0 ? queueData[queueData.length - 1] : "none";
+            showResult("Highlight cleared. Current queue: [" + queueData.join(", ") + "] (front: " + front + ", rear: " + rear + ")", "info");
+        }
+
+        function showResult(message, type = "info") {
+            const resultDiv = document.getElementById('resultDisplay');
+            resultDiv.textContent = message;
+
+            // Remove all type classes
+            resultDiv.classList.remove('success', 'error', 'info');
+
+            // Add the appropriate type class
+            if (type) {
+                resultDiv.classList.add(type);
+            }
+        }
+
+        // Handle Enter key for input
+        document.getElementById('enqueueValue').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                enqueueElement();
+            }
+        });
+    </script>
+</body>
+
+</html>
