@@ -378,11 +378,30 @@
     </div>
 
     <script>
+        /*
+            EDUCATIONAL NOTE: Linked List Data Structure Implementation
+            
+            This JavaScript implementation simulates the C++ linked list from code.cpp:
+            - C++ struct Node { int data; Node* next; } → JavaScript { data: value, next: index }
+            - C++ pointers → JavaScript array indices (simplified for visualization)
+            - C++ dynamic allocation → JavaScript object creation
+            
+            Key Linked List Concepts Demonstrated:
+            1. Node structure with data and pointer to next node
+            2. Dynamic size - can grow/shrink during runtime
+            3. Sequential access - must traverse from head to reach any node
+            4. Pointer manipulation for insertions and deletions
+            5. NULL termination - last node points to null
+            
+            Note: This implementation uses array indices instead of actual pointers
+            for simplicity and visualization purposes.
+        */
+
         // Initialize linked list with sample data matching code.cpp
         let listNodes = [
-            { data: 10, next: 1 },
-            { data: 20, next: 2 },
-            { data: 30, next: null }
+            { data: 10, next: 1 },  // Head node points to index 1
+            { data: 20, next: 2 },  // Second node points to index 2
+            { data: 30, next: null } // Tail node points to null
         ];
         let traversalInProgress = false;
 
@@ -441,31 +460,45 @@
             container.appendChild(nullContainer);
         }
 
+        /*
+            EDUCATIONAL NOTE: Insert at Head Operation
+            
+            Inserting at the head of a linked list:
+            1. Create a new node with the given data
+            2. Set new node's next pointer to current head
+            3. Update head pointer to point to new node
+            
+            This operation is O(1) time complexity - constant time regardless of list size.
+            In C++: Node* newNode = new Node(value); newNode->next = head; head = newNode;
+            
+            Real-world analogy: Adding a new car to the front of a train
+        */
         function insertAtHead() {
             const input = document.getElementById('insertValue');
             const value = parseInt(input.value);
 
+            // Input validation
             if (isNaN(value)) {
                 showResult("Error: Please enter a valid number", "error");
                 return;
             }
 
-            // Create new node
+            // Create new node that will become the new head
             const newNode = { data: value, next: listNodes.length > 0 ? 0 : null };
 
-            // Update existing nodes' indices
+            // Update existing nodes' indices (shift them by 1)
             listNodes = listNodes.map((node, index) => ({
                 ...node,
                 next: node.next !== null ? node.next + 1 : null
             }));
 
-            // Insert new node at the beginning
+            // Insert new node at the beginning (becomes new head)
             listNodes.unshift(newNode);
 
             updateDisplay();
             showResult("Successfully inserted " + value + " at head. New list: " + getListString(), "success");
 
-            // Clear input
+            // Clear input field
             input.value = '';
         }
 
@@ -539,12 +572,29 @@
             input.value = '';
         }
 
+        /*
+            EDUCATIONAL NOTE: Linked List Traversal
+            
+            Traversing a linked list requires following the next pointers:
+            1. Start at the head node
+            2. Visit current node (process its data)
+            3. Follow the next pointer to the next node
+            4. Repeat until reaching NULL (end of list)
+            
+            Time Complexity: O(n) - must visit each node sequentially
+            Space Complexity: O(1) - only need one pointer to track current position
+            
+            This demonstrates why linked lists don't support random access like arrays.
+            Real-world analogy: Following a treasure hunt with clues leading to the next location
+        */
         async function traverseList() {
+            // Check for empty list
             if (listNodes.length === 0) {
                 showResult("Error: List is empty - nothing to traverse", "error");
                 return;
             }
 
+            // Prevent multiple simultaneous traversals
             if (traversalInProgress) {
                 showResult("Traversal already in progress", "error");
                 return;
@@ -554,30 +604,32 @@
             clearHighlight();
 
             let traversalPath = [];
-            let currentIndex = 0;
-            let nodeCount = 0;
+            let currentIndex = 0; // Start at head (index 0)
+            let nodeCount = 0;    // Safety counter to prevent infinite loops
 
             showResult("Starting traversal...", "info");
 
+            // Follow the next pointers until reaching NULL
             while (currentIndex !== null && nodeCount < listNodes.length) {
                 const node = listNodes[currentIndex];
                 traversalPath.push(node.data);
 
-                // Highlight current node
+                // Highlight current node being visited
                 const nodeElement = document.getElementById(`node-${currentIndex}`);
                 if (nodeElement) {
                     nodeElement.classList.add('traversing');
                 }
 
-                // Wait for animation
+                // Wait for animation to show traversal progress
                 await new Promise(resolve => setTimeout(resolve, 800));
 
-                // Remove traversing class and add highlight
+                // Mark node as visited
                 if (nodeElement) {
                     nodeElement.classList.remove('traversing');
                     nodeElement.classList.add('highlight');
                 }
 
+                // Move to next node
                 currentIndex = node.next;
                 nodeCount++;
             }

@@ -63,26 +63,15 @@
         }
 
         .tree-visualization {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative;
+            width: 100%;
+            height: 450px;
             margin: 30px 0;
-            min-height: 400px;
-            position: relative;
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .tree-level {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-            position: relative;
-            width: 100%;
+            overflow: visible;
         }
 
         .tree-node {
+            position: absolute;
             width: 50px;
             height: 50px;
             border: 2px solid #333;
@@ -93,7 +82,6 @@
             font-size: 18px;
             font-weight: bold;
             background-color: #e0e0e0;
-            position: relative;
             transition: all 0.3s ease;
             z-index: 10;
         }
@@ -110,83 +98,110 @@
             color: white;
         }
 
-        /* Tree structure with proper positioning */
-        .level-1 {
-            margin-bottom: 30px;
+        /* Positioning nodes in tree structure */
+        #node-1 {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .level-2 {
-            margin-bottom: 30px;
-            gap: 200px;
+        #node-2 {
+            top: 120px;
+            left: 25%;
+            transform: translateX(-50%);
         }
 
-        .level-3 {
-            gap: 40px;
+        #node-3 {
+            top: 120px;
+            left: 75%;
+            transform: translateX(-50%);
         }
 
-        /* Connecting lines using CSS pseudo-elements */
-        .tree-node::before,
-        .tree-node::after {
-            content: '';
+        #node-4 {
+            top: 220px;
+            left: 12.5%;
+            transform: translateX(-50%);
+        }
+
+        #node-5 {
+            top: 220px;
+            left: 37.5%;
+            transform: translateX(-50%);
+        }
+
+        #node-6 {
+            top: 220px;
+            left: 62.5%;
+            transform: translateX(-50%);
+        }
+
+        #node-7 {
+            top: 220px;
+            left: 87.5%;
+            transform: translateX(-50%);
+        }
+
+        /* Connection lines using SVG-like approach with divs */
+        .tree-line {
             position: absolute;
             background-color: #333;
             z-index: 1;
         }
 
-        /* Root to children connections */
-        #node-1::before {
-            width: 100px;
-            height: 2px;
-            top: 50px;
-            left: -75px;
-            transform: rotate(-30deg);
-            transform-origin: right center;
+        /* Root to level 2 connections */
+        .line-1-to-2 {
+            width: 2px;
+            height: 85px;
+            top: 70px;
+            left: calc(50% - 1px);
+            transform-origin: top center;
+            transform: rotate(-26.57deg);
         }
 
-        #node-1::after {
-            width: 100px;
-            height: 2px;
-            top: 50px;
-            right: -75px;
-            transform: rotate(30deg);
-            transform-origin: left center;
+        .line-1-to-3 {
+            width: 2px;
+            height: 85px;
+            top: 70px;
+            left: calc(50% - 1px);
+            transform-origin: top center;
+            transform: rotate(26.57deg);
         }
 
         /* Level 2 to level 3 connections */
-        #node-2::before {
-            width: 60px;
-            height: 2px;
-            top: 50px;
-            left: -45px;
-            transform: rotate(-45deg);
-            transform-origin: right center;
+        .line-2-to-4 {
+            width: 2px;
+            height: 85px;
+            top: 170px;
+            left: calc(25% - 1px);
+            transform-origin: top center;
+            transform: rotate(-26.57deg);
         }
 
-        #node-2::after {
-            width: 60px;
-            height: 2px;
-            top: 50px;
-            right: -45px;
-            transform: rotate(45deg);
-            transform-origin: left center;
+        .line-2-to-5 {
+            width: 2px;
+            height: 85px;
+            top: 170px;
+            left: calc(25% - 1px);
+            transform-origin: top center;
+            transform: rotate(26.57deg);
         }
 
-        #node-3::before {
-            width: 60px;
-            height: 2px;
-            top: 50px;
-            left: -45px;
-            transform: rotate(-45deg);
-            transform-origin: right center;
+        .line-3-to-6 {
+            width: 2px;
+            height: 85px;
+            top: 170px;
+            left: calc(75% - 1px);
+            transform-origin: top center;
+            transform: rotate(-26.57deg);
         }
 
-        #node-3::after {
-            width: 60px;
-            height: 2px;
-            top: 50px;
-            right: -45px;
-            transform: rotate(45deg);
-            transform-origin: left center;
+        .line-3-to-7 {
+            width: 2px;
+            height: 85px;
+            top: 170px;
+            left: calc(75% - 1px);
+            transform-origin: top center;
+            transform: rotate(26.57deg);
         }
 
         .controls {
@@ -320,16 +335,41 @@
                 margin: 0 15px;
             }
 
-            .level-2 .tree-node:first-child {
-                margin-right: 60px;
-            }
-
-            .level-2 .tree-node:last-child {
-                margin-left: 60px;
-            }
-
             .tree-visualization {
-                min-height: 300px;
+                height: 350px;
+            }
+
+            .tree-node {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            /* Adjust line lengths for smaller screens */
+            .line-1-to-2,
+            .line-1-to-3,
+            .line-2-to-4,
+            .line-2-to-5,
+            .line-3-to-6,
+            .line-3-to-7 {
+                height: 70px;
+            }
+
+            .line-2-to-4,
+            .line-2-to-5 {
+                top: 160px;
+            }
+
+            .line-3-to-6,
+            .line-3-to-7 {
+                top: 160px;
+            }
+
+            #node-4,
+            #node-5,
+            #node-6,
+            #node-7 {
+                top: 210px;
             }
 
             .nav-link {
@@ -340,19 +380,46 @@
         }
 
         @media (max-width: 480px) {
+            .tree-visualization {
+                height: 300px;
+            }
+
             .tree-node {
                 width: 35px;
                 height: 35px;
                 font-size: 14px;
-                margin: 0 10px;
             }
 
-            .level-2 .tree-node:first-child {
-                margin-right: 40px;
+            /* Further adjust line lengths for very small screens */
+            .line-1-to-2,
+            .line-1-to-3,
+            .line-2-to-4,
+            .line-2-to-5,
+            .line-3-to-6,
+            .line-3-to-7 {
+                height: 60px;
             }
 
-            .level-2 .tree-node:last-child {
-                margin-left: 40px;
+            .line-2-to-4,
+            .line-2-to-5 {
+                top: 150px;
+            }
+
+            .line-3-to-6,
+            .line-3-to-7 {
+                top: 150px;
+            }
+
+            #node-2,
+            #node-3 {
+                top: 110px;
+            }
+
+            #node-4,
+            #node-5,
+            #node-6,
+            #node-7 {
+                top: 190px;
             }
 
             .tree-level {
@@ -378,39 +445,37 @@
 
     <div class="tree-container">
         <h3>Binary Tree Visualization</h3>
+        <!-- 
+            EDUCATIONAL NOTE: Binary Tree Structure
+            
+            This tree matches the structure from code.cpp:
+                    1
+                   / \
+                  2   3
+                 / \ / \
+                4 5 6 7
+            
+            The tree uses absolute positioning for precise node placement
+            and dedicated div elements for connecting lines. Each line is
+            carefully positioned and rotated to connect parent to child nodes.
+        -->
         <div class="tree-visualization" id="treeVisualization">
-            <!-- Tree structure matching code.cpp -->
-            <div class="tree-level level-1">
-                <div class="tree-node" id="node-1" data-value="1">1</div>
-            </div>
+            <!-- Connection lines (drawn first, behind nodes) -->
+            <div class="tree-line line-1-to-2"></div>
+            <div class="tree-line line-1-to-3"></div>
+            <div class="tree-line line-2-to-4"></div>
+            <div class="tree-line line-2-to-5"></div>
+            <div class="tree-line line-3-to-6"></div>
+            <div class="tree-line line-3-to-7"></div>
 
-            <!-- Connecting lines from root to children -->
-            <div class="tree-line line-diagonal-left" style="position: absolute; top: 90px; left: calc(50% - 60px);">
-            </div>
-            <div class="tree-line line-diagonal-right" style="position: absolute; top: 90px; left: calc(50% + 60px);">
-            </div>
-
-            <div class="tree-level level-2">
-                <div class="tree-node" id="node-2" data-value="2">2</div>
-                <div class="tree-node" id="node-3" data-value="3">3</div>
-            </div>
-
-            <!-- Connecting lines from level 2 to level 3 -->
-            <div class="tree-line line-diagonal-left" style="position: absolute; top: 190px; left: calc(50% - 120px);">
-            </div>
-            <div class="tree-line line-diagonal-right" style="position: absolute; top: 190px; left: calc(50% - 60px);">
-            </div>
-            <div class="tree-line line-diagonal-left" style="position: absolute; top: 190px; left: calc(50% + 60px);">
-            </div>
-            <div class="tree-line line-diagonal-right" style="position: absolute; top: 190px; left: calc(50% + 120px);">
-            </div>
-
-            <div class="tree-level level-3">
-                <div class="tree-node" id="node-4" data-value="4">4</div>
-                <div class="tree-node" id="node-5" data-value="5">5</div>
-                <div class="tree-node" id="node-6" data-value="6">6</div>
-                <div class="tree-node" id="node-7" data-value="7">7</div>
-            </div>
+            <!-- Tree nodes positioned absolutely -->
+            <div class="tree-node" id="node-1" data-value="1">1</div>
+            <div class="tree-node" id="node-2" data-value="2">2</div>
+            <div class="tree-node" id="node-3" data-value="3">3</div>
+            <div class="tree-node" id="node-4" data-value="4">4</div>
+            <div class="tree-node" id="node-5" data-value="5">5</div>
+            <div class="tree-node" id="node-6" data-value="6">6</div>
+            <div class="tree-node" id="node-7" data-value="7">7</div>
         </div>
 
         <div class="controls">
@@ -447,8 +512,20 @@
         // Initialize display
         showResult("Ready to perform tree traversals. Tree structure: Root(1) → Left(2,4,5) → Right(3,6,7)", "info");
 
+        /*
+            EDUCATIONAL NOTE: Preorder Traversal
+            
+            Preorder traversal visits nodes in Root → Left → Right order:
+            1. Process the current node first
+            2. Recursively traverse the left subtree
+            3. Recursively traverse the right subtree
+            
+            This matches the C++ preorder function from code.cpp.
+            Use case: Creating a copy of the tree, prefix expression evaluation
+            Expected sequence for our tree: 1 → 2 → 4 → 5 → 3 → 6 → 7
+        */
         async function preorderTraversal() {
-            if (isTraversing) return;
+            if (isTraversing) return; // Prevent multiple traversals
 
             resetTree();
             isTraversing = true;
@@ -477,8 +554,20 @@
             await preorderHelper(node.right);
         }
 
+        /*
+            EDUCATIONAL NOTE: Inorder Traversal
+            
+            Inorder traversal visits nodes in Left → Root → Right order:
+            1. Recursively traverse the left subtree
+            2. Process the current node
+            3. Recursively traverse the right subtree
+            
+            This matches the C++ inorder function from code.cpp.
+            Use case: Binary Search Trees (gives sorted order), infix expression evaluation
+            Expected sequence for our tree: 4 → 2 → 5 → 1 → 6 → 3 → 7
+        */
         async function inorderTraversal() {
-            if (isTraversing) return;
+            if (isTraversing) return; // Prevent multiple traversals
 
             resetTree();
             isTraversing = true;
@@ -507,8 +596,20 @@
             await inorderHelper(node.right);
         }
 
+        /*
+            EDUCATIONAL NOTE: Postorder Traversal
+            
+            Postorder traversal visits nodes in Left → Right → Root order:
+            1. Recursively traverse the left subtree
+            2. Recursively traverse the right subtree  
+            3. Process the current node last
+            
+            This matches the C++ postorder function from code.cpp.
+            Use case: Deleting trees (delete children before parent), postfix expression evaluation
+            Expected sequence for our tree: 4 → 5 → 2 → 6 → 7 → 3 → 1
+        */
         async function postorderTraversal() {
-            if (isTraversing) return;
+            if (isTraversing) return; // Prevent multiple traversals
 
             resetTree();
             isTraversing = true;

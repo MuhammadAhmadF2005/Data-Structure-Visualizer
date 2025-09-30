@@ -360,9 +360,25 @@
     </div>
 
     <script>
+        /*
+            EDUCATIONAL NOTE: Stack Data Structure Implementation
+            
+            This JavaScript implementation mirrors the C++ stack operations from code.cpp:
+            - C++ stack<int> st → JavaScript let stackData = [] (using array as stack)
+            - C++ st.push(value) → JavaScript stackData.push(value)
+            - C++ st.pop() → JavaScript stackData.pop()
+            - C++ st.top() → JavaScript stackData[stackData.length - 1] (peek)
+            
+            Key Stack Concepts Demonstrated:
+            1. LIFO (Last-In-First-Out) principle - last element added is first removed
+            2. Top-only access - can only add/remove from the top
+            3. Stack overflow (full) and underflow (empty) conditions
+            4. Peek operation - view top element without removing it
+        */
+
         // Initialize stack with sample data matching code.cpp pattern
         let stackData = [10, 20, 30];
-        const maxElements = 10;
+        const maxElements = 10; // Limit for visualization purposes
 
         // Initialize display
         updateDisplay();
@@ -395,15 +411,29 @@
             });
         }
 
+        /*
+            EDUCATIONAL NOTE: Push Operation
+            
+            Push adds an element to the top of the stack:
+            - New elements always go on top (LIFO principle)
+            - Uses JavaScript push() to add to end of array
+            - Checks for stack overflow condition
+            - Updates visual display to show new top element
+            
+            Time Complexity: O(1) - Adding to end of array is constant time
+            Real-world analogy: Placing a plate on top of a stack of plates
+        */
         function pushElement() {
             const input = document.getElementById('pushValue');
             const value = parseInt(input.value);
 
+            // Input validation
             if (isNaN(value)) {
                 showResult("Error: Please enter a valid number", "error");
                 return;
             }
 
+            // Check for stack overflow
             if (stackData.length >= maxElements) {
                 showResult("Error: Stack is full (maximum " + maxElements + " elements)", "error");
                 return;
@@ -414,11 +444,24 @@
             updateDisplay();
             showResult("Successfully pushed " + value + " onto the stack. New top: " + value, "success");
 
-            // Clear input
+            // Clear input field
             input.value = '';
         }
 
+        /*
+            EDUCATIONAL NOTE: Pop Operation
+            
+            Pop removes and returns the top element from the stack:
+            - Always removes the most recently added element (LIFO)
+            - Uses JavaScript pop() to remove from end of array
+            - Checks for stack underflow condition
+            - Returns the removed value to the user
+            
+            Time Complexity: O(1) - Removing from end of array is constant time
+            Real-world analogy: Taking the top plate from a stack of plates
+        */
         function popElement() {
+            // Check for stack underflow
             if (stackData.length === 0) {
                 showResult("Error: Stack is empty - cannot pop", "error");
                 return;
@@ -428,6 +471,7 @@
             const poppedValue = stackData.pop();
             updateDisplay();
 
+            // Show new top element
             const newTop = stackData.length > 0 ? stackData[stackData.length - 1] : "none";
             showResult("Successfully popped " + poppedValue + " from the stack. New top: " + newTop, "success");
         }

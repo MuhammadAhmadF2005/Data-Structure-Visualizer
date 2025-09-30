@@ -91,7 +91,9 @@
   - Add "Back to Menu" links on all visualizer pages
   - _Requirements: 6.4, 6.5_
 
-- [-] 8. Create project documentation
+- [x] 8. Create project documentation
+
+
 
 
 

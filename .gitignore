@@ -1,0 +1,110 @@
+# Data Structure Visualizer - .gitignore
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Node.js (if adding build tools later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build Output (if adding build process later)
+dist/
+build/
+out/
+
+# Environment Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Backup Files
+*.bak
+*.backup
+*.orig
+
+# Archive Files
+*.zip
+*.tar.gz
+*.rar
+
+# Documentation Build (if using tools like GitBook)
+_book/
+.grunt
+
+# Coverage Reports (if adding testing later)
+coverage/
+*.lcov
+
+# Dependency Directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (if using Parcel later)
+.cache
+.parcel-cache
+
+# Next.js build output (if migrating to Next.js)
+.next
+
+# Nuxt.js build / generate output (if using Nuxt.js)
+.nuxt
+
+# Storybook build outputs (if adding Storybook)
+.out
+.storybook-out
+
+# Temporary folders
+tmp/
+temp/
+
+# Local development server files
+.serve/
+
+# Browser testing artifacts
+screenshots/
+videos/
+cypress/
+
+# Misc
+*.pid
+*.seed
+*.pid.lock
