@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching Algorithms Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #0056b3;
+        }
+
+        .search-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .array-visualization {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            min-height: 120px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .array-element {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px;
+        }
+
+        .element-box {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .element-box.current {
+            background-color: #ffc107;
+            color: #212529;
+            transform: scale(1.1);
+        }
+
+        .element-box.found {
+            background-color: #28a745;
+            color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+        }
+
+        .element-box.checked {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .element-index {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 80px;
+        }
+
+        .result-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        .result-display.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .result-display.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .algorithm-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .search-stats {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .element-box {
+                width: 50px;
+                height: 50px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Searching Algorithms Visualizer</h1>
+        <p>Visualize Linear Search and Binary Search algorithms</p>
+    </div>
+
+    <div class="navigation">
+        <a href="index.html" class="nav-link">← Back to Menu</a>
+    </div>
+
+    <div class="search-container">
+        <h3>Array Visualization</h3>
+        <div class="array-visualization" id="arrayVisualization"></div>
+
+        <div class="controls">
+            <div class="control-group">
+                <input type="number" id="searchValue" placeholder="Search for" min="1" max="100">
+                <button class="btn-primary" onclick="linearSearch()">Linear Search</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-info" onclick="binarySearch()">Binary Search</button>
+            </div>
+
+            <div class="control-group">
+                <button class="btn-success" onclick="generateSortedArray()">Generate Sorted Array</button>
+                <button class="btn-warning" onclick="resetVisualization()">Reset</button>
+            </div>
+        </div>
+
+        <div class="algorithm-info" id="algorithmInfo">
+            Enter a number to search for and choose an algorithm. Binary search requires a sorted array.
+        </div>
+
+        <div class="search-stats" id="searchStats" style="display: none;"></div>
+
+        <div class="result-display" id="resultDisplay">
+            Ready to search! Current array: [12, 25, 34, 45, 56, 67, 78, 89]
+        </div>
+    </div>
+
+    <script>
+        let arrayData = [12, 25, 34, 45, 56, 67, 78, 89];
+        let isSearching = false;
+        let searchSpeed = 800;
+        let comparisons = 0;
+
+        // Initialize display
+        updateDisplay();
+        showResult("Ready to search! Current array: [" + arrayData.join(", ") + "]");
+
+        function updateDisplay() {
+            const container = document.getElementById('arrayVisualization');
+            container.innerHTML = '';
+
+            arrayData.forEach((value, index) => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = 'array-element';
+                elementDiv.innerHTML = `
+                    <div class="element-box" id="element-${index}">
+                        ${value}
+                    </div>
+                    <div class="element-index">Index ${index}</div>
+                `;
+                container.appendChild(elementDiv);
+            });
+        }
+
+        function generateSortedArray() {
+            if (isSearching) return;
+
+            arrayData = [];
+            for (let i = 0; i < 8; i++) {
+                arrayData.push((i + 1) * 10 + Math.floor(Math.random() * 10));
+            }
+            arrayData.sort((a, b) => a - b);
+
+            updateDisplay();
+            showResult("Generated new sorted array: [" + arrayData.join(", ") + "]");
+            showAlgorithmInfo("Array generated", "New sorted array created for binary search demonstration.");
+        }
+
+        async function linearSearch() {
+            const searchValue = parseInt(document.getElementById('searchValue').value);
+
+            if (isNaN(searchValue)) {
+                showResult("Please enter a valid number to search for", "error");
+                return;
+            }
+
+            if (isSearching) return;
+            isSearching = true;
+            comparisons = 0;
+
+            showAlgorithmInfo("Linear Search", "Searches through array sequentially from start to end. Time Complexity: O(n)");
+            resetVisualization();
+
+            for (let i = 0; i < arrayData.length && isSearching; i++) {
+                // Highlight current element
+                const currentElement = document.getElementById(`element-${i}`);
+                currentElement.classList.add('current');
+
+                comparisons++;
+                updateSearchStats("Linear Search", comparisons, i + 1);
+
+                await sleep(searchSpeed);
+
+                if (arrayData[i] === searchValue) {
+                    // Found the element
+                    currentElement.classList.remove('current');
+                    currentElement.classList.add('found');
+
+                    showResult(`Found ${searchValue} at index ${i} after ${comparisons} comparisons!`, "success");
+                    isSearching = false;
+                    return;
+                }
+
+                // Mark as checked
+                currentElement.classList.remove('current');
+                currentElement.classList.add('checked');
+            }
+
+            // Not found
+            showResult(`${searchValue} not found in the array after ${comparisons} comparisons.`, "error");
+            isSearching = false;
+        }
+
+        async function binarySearch() {
+            const searchValue = parseInt(document.getElementById('searchValue').value);
+
+            if (isNaN(searchValue)) {
+                showResult("Please enter a valid number to search for", "error");
+                return;
+            }
+
+            if (isSearching) return;
+            isSearching = true;
+            comparisons = 0;
+
+            showAlgorithmInfo("Binary Search", "Searches by repeatedly dividing sorted array in half. Time Complexity: O(log n)");
+            resetVisualization();
+
+            let left = 0;
+            let right = arrayData.length - 1;
+
+            while (left <= right && isSearching) {
+                const mid = Math.floor((left + right) / 2);
+
+                // Highlight current middle element
+                const midElement = document.getElementById(`element-${mid}`);
+                midElement.classList.add('current');
+
+                comparisons++;
+                updateSearchStats("Binary Search", comparisons, `Range: [${left}, ${right}], Mid: ${mid}`);
+
+                await sleep(searchSpeed);
+
+                if (arrayData[mid] === searchValue) {
+                    // Found the element
+                    midElement.classList.remove('current');
+                    midElement.classList.add('found');
+
+                    showResult(`Found ${searchValue} at index ${mid} after ${comparisons} comparisons!`, "success");
+                    isSearching = false;
+                    return;
+                }
+
+                // Mark as checked
+                midElement.classList.remove('current');
+                midElement.classList.add('checked');
+
+                if (arrayData[mid] < searchValue) {
+                    // Mark left half as eliminated
+                    for (let i = left; i <= mid; i++) {
+                        document.getElementById(`element-${i}`).classList.add('checked');
+                    }
+                    left = mid + 1;
+                } else {
+                    // Mark right half as eliminated
+                    for (let i = mid; i <= right; i++) {
+                        document.getElementById(`element-${i}`).classList.add('checked');
+                    }
+                    right = mid - 1;
+                }
+
+                await sleep(searchSpeed / 2);
+            }
+
+            // Not found
+            showResult(`${searchValue} not found in the array after ${comparisons} comparisons.`, "error");
+            isSearching = false;
+        }
+
+        function resetVisualization() {
+            isSearching = false;
+            comparisons = 0;
+
+            // Clear all highlights
+            document.querySelectorAll('.element-box').forEach(element => {
+                element.classList.remove('current', 'found', 'checked');
+            });
+
+            document.getElementById('searchStats').style.display = 'none';
+            showResult("Visualization reset. Current array: [" + arrayData.join(", ") + "]");
+        }
+
+        function updateSearchStats(algorithm, comparisons, additional) {
+            const statsDiv = document.getElementById('searchStats');
+            statsDiv.style.display = 'block';
+            statsDiv.innerHTML = `
+                <strong>${algorithm} Progress:</strong><br>
+                Comparisons made: ${comparisons}<br>
+                ${additional}
+            `;
+        }
+
+        function showAlgorithmInfo(name, description) {
+            document.getElementById('algorithmInfo').innerHTML = `<strong>${name}:</strong> ${description}`;
+        }
+
+        function showResult(message, type = "info") {
+            const resultDiv = document.getElementById('resultDisplay');
+            resultDiv.textContent = message;
+
+            // Remove all type classes
+            resultDiv.classList.remove('success', 'error');
+
+            // Add the appropriate type class
+            if (type) {
+                resultDiv.classList.add(type);
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Handle Enter key for search input
+        document.getElementById('searchValue').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                linearSearch();
+            }
+        });
+    </script>
+</body>
+
+</html>

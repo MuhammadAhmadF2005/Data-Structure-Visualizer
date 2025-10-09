@@ -12,7 +12,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f0f4f8; /* Light blue-gray background */
+            background-color: #f0f4f8;
+            /* Light blue-gray background */
             color: #333;
         }
 
@@ -22,13 +23,15 @@
         }
 
         .header h1 {
-            color: #2c3e50; /* Darker blue */
+            color: #2c3e50;
+            /* Darker blue */
             margin-bottom: 10px;
             font-weight: 700;
         }
 
         .header p {
-            color: #7f8c8d; /* Grayish text */
+            color: #7f8c8d;
+            /* Grayish text */
             font-size: 16px;
         }
 
@@ -40,7 +43,8 @@
         .nav-link {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #3498db; /* Bright blue */
+            background-color: #3498db;
+            /* Bright blue */
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -51,7 +55,8 @@
 
         .nav-link:hover,
         .nav-link:focus {
-            background-color: #2980b9; /* Darker blue on hover */
+            background-color: #2980b9;
+            /* Darker blue on hover */
         }
 
         .nav-link:active {
@@ -78,21 +83,24 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            border: 2px solid #bdc3c7; /* Softer border */
+            border: 2px solid #bdc3c7;
+            /* Softer border */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             font-weight: 600;
-            background-color: #ecf0f1; /* Light gray background */
+            background-color: #ecf0f1;
+            /* Light gray background */
             color: #2c3e50;
             transition: all 0.3s ease;
             z-index: 10;
         }
 
         .tree-node.highlight {
-            background-color: #e67e22; /* Orange for highlight */
+            background-color: #e67e22;
+            /* Orange for highlight */
             color: white;
             transform: scale(1.2);
             box-shadow: 0 0 15px rgba(230, 126, 34, 0.7);
@@ -100,7 +108,8 @@
         }
 
         .tree-node.visited {
-            background-color: #9b59b6; /* Amethyst for visited */
+            background-color: #9b59b6;
+            /* Amethyst for visited */
             color: white;
             border-color: #8e44ad;
         }
@@ -151,9 +160,12 @@
         /* Dynamic connection lines */
         .tree-line {
             position: absolute;
-            background-color: #95a5a6; /* Gray for lines */
-            height: 2px; /* All lines have a consistent thickness */
-            transform-origin: 0 0; /* Rotate lines from their starting point */
+            background-color: #95a5a6;
+            /* Gray for lines */
+            height: 2px;
+            /* All lines have a consistent thickness */
+            transform-origin: 0 0;
+            /* Rotate lines from their starting point */
             z-index: 1;
         }
 
@@ -169,7 +181,8 @@
             padding: 12px 24px;
             font-size: 16px;
             border: none;
-            border-radius: 8px; /* Rounded corners */
+            border-radius: 8px;
+            /* Rounded corners */
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
@@ -184,7 +197,8 @@
         }
 
         .btn-primary {
-            background-color: #3498db; /* Bright Blue */
+            background-color: #3498db;
+            /* Bright Blue */
             color: white;
         }
 
@@ -193,7 +207,8 @@
         }
 
         .btn-success {
-            background-color: #2ecc71; /* Emerald Green */
+            background-color: #2ecc71;
+            /* Emerald Green */
             color: white;
         }
 
@@ -202,7 +217,8 @@
         }
 
         .btn-info {
-            background-color: #1abc9c; /* Turquoise */
+            background-color: #1abc9c;
+            /* Turquoise */
             color: white;
         }
 
@@ -211,12 +227,22 @@
         }
 
         .btn-warning {
-            background-color: #f1c40f; /* Sunflower Yellow */
+            background-color: #f1c40f;
+            /* Sunflower Yellow */
             color: #2c3e50;
         }
 
         .btn-warning:hover {
             background-color: #f39c12;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
         }
 
         .result-display {
@@ -248,7 +274,8 @@
             font-weight: 600;
             margin-top: 10px;
             padding: 12px;
-            background-color: #fdf5e6; /* Lighter orange */
+            background-color: #fdf5e6;
+            /* Lighter orange */
             border: 1px solid #fbe2b1;
             border-radius: 8px;
             color: #c09853;
@@ -436,10 +463,19 @@
         </div>
 
         <div class="controls">
-            <button class="btn-primary" onclick="preorderTraversal()">Preorder Traversal</button>
-            <button class="btn-success" onclick="inorderTraversal()">Inorder Traversal</button>
-            <button class="btn-info" onclick="postorderTraversal()">Postorder Traversal</button>
-            <button class="btn-warning" onclick="resetTree()">Reset</button>
+            <div style="margin-bottom: 15px;">
+                <input type="number" id="nodeValue" placeholder="Node value" min="1" max="99"
+                    style="padding: 8px; margin-right: 10px; border: 2px solid #ddd; border-radius: 5px;">
+                <button class="btn-success" onclick="addNode()">Add Node</button>
+                <button class="btn-danger" onclick="deleteNode()">Delete Node</button>
+            </div>
+
+            <div>
+                <button class="btn-primary" onclick="preorderTraversal()">Preorder Traversal</button>
+                <button class="btn-success" onclick="inorderTraversal()">Inorder Traversal</button>
+                <button class="btn-info" onclick="postorderTraversal()">Postorder Traversal</button>
+                <button class="btn-warning" onclick="resetTree()">Reset Tree</button>
+            </div>
         </div>
 
         <div class="result-display" id="resultDisplay">
@@ -619,6 +655,189 @@
                 // Brief pause before next node
                 await sleep(200);
             }
+        }
+
+        function addNode() {
+            const input = document.getElementById('nodeValue');
+            const value = parseInt(input.value);
+
+            if (isNaN(value)) {
+                showResult("Please enter a valid number for the node value.", "error");
+                return;
+            }
+
+            if (isTraversing) {
+                showResult("Cannot modify tree during traversal.", "error");
+                return;
+            }
+
+            // Add node to tree data structure
+            insertNodeInTree(treeData, value);
+
+            // Rebuild and redraw the tree
+            rebuildTreeVisualization();
+
+            showResult(`Added node ${value} to the tree.`, "success");
+            input.value = '';
+        }
+
+        function deleteNode() {
+            const input = document.getElementById('nodeValue');
+            const value = parseInt(input.value);
+
+            if (isNaN(value)) {
+                showResult("Please enter a valid number for the node to delete.", "error");
+                return;
+            }
+
+            if (isTraversing) {
+                showResult("Cannot modify tree during traversal.", "error");
+                return;
+            }
+
+            // Delete node from tree data structure
+            const deleted = deleteNodeFromTree(treeData, value);
+
+            if (deleted) {
+                // Rebuild and redraw the tree
+                rebuildTreeVisualization();
+                showResult(`Deleted node ${value} from the tree.`, "success");
+            } else {
+                showResult(`Node ${value} not found in the tree.`, "error");
+            }
+
+            input.value = '';
+        }
+
+        function insertNodeInTree(node, value) {
+            if (!node) {
+                return { data: value, left: null, right: null };
+            }
+
+            if (value < node.data) {
+                node.left = insertNodeInTree(node.left, value);
+            } else if (value > node.data) {
+                node.right = insertNodeInTree(node.right, value);
+            }
+            // If value equals node.data, don't insert (no duplicates)
+
+            return node;
+        }
+
+        function deleteNodeFromTree(node, value) {
+            if (!node) return null;
+
+            if (value < node.data) {
+                node.left = deleteNodeFromTree(node.left, value);
+            } else if (value > node.data) {
+                node.right = deleteNodeFromTree(node.right, value);
+            } else {
+                // Node to be deleted found
+                if (!node.left) return node.right;
+                if (!node.right) return node.left;
+
+                // Node has two children
+                let minRight = findMin(node.right);
+                node.data = minRight.data;
+                node.right = deleteNodeFromTree(node.right, minRight.data);
+            }
+
+            return node;
+        }
+
+        function findMin(node) {
+            while (node.left) {
+                node = node.left;
+            }
+            return node;
+        }
+
+        function rebuildTreeVisualization() {
+            // Clear existing visualization
+            const container = document.getElementById('treeVisualization');
+            container.innerHTML = '';
+
+            // Create new SVG and nodes based on current tree structure
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'tree-svg');
+            svg.setAttribute('viewBox', '0 0 800 400');
+            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw tree recursively
+            const positions = {};
+            calculatePositions(treeData, 400, 55, 150, positions, 1);
+            drawConnections(treeData, svg, positions);
+            drawNodes(treeData, container, positions);
+
+            container.appendChild(svg);
+        }
+
+        function calculatePositions(node, x, y, spacing, positions, id) {
+            if (!node) return id;
+
+            positions[node.data] = { x, y, id: `node-${id}` };
+
+            let nextId = id + 1;
+            if (node.left) {
+                nextId = calculatePositions(node.left, x - spacing, y + 100, spacing * 0.6, positions, nextId);
+            }
+            if (node.right) {
+                nextId = calculatePositions(node.right, x + spacing, y + 100, spacing * 0.6, positions, nextId);
+            }
+
+            return nextId;
+        }
+
+        function drawConnections(node, svg, positions) {
+            if (!node) return;
+
+            const pos = positions[node.data];
+
+            if (node.left) {
+                const leftPos = positions[node.left.data];
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', pos.x);
+                line.setAttribute('y1', pos.y);
+                line.setAttribute('x2', leftPos.x);
+                line.setAttribute('y2', leftPos.y);
+                line.setAttribute('stroke', '#333');
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
+
+                drawConnections(node.left, svg, positions);
+            }
+
+            if (node.right) {
+                const rightPos = positions[node.right.data];
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', pos.x);
+                line.setAttribute('y1', pos.y);
+                line.setAttribute('x2', rightPos.x);
+                line.setAttribute('y2', rightPos.y);
+                line.setAttribute('stroke', '#333');
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
+
+                drawConnections(node.right, svg, positions);
+            }
+        }
+
+        function drawNodes(node, container, positions) {
+            if (!node) return;
+
+            const pos = positions[node.data];
+            const nodeDiv = document.createElement('div');
+            nodeDiv.className = 'tree-node';
+            nodeDiv.id = pos.id;
+            nodeDiv.setAttribute('data-value', node.data);
+            nodeDiv.style.top = `${pos.y - 25}px`;
+            nodeDiv.style.left = `${pos.x - 25}px`;
+            nodeDiv.textContent = node.data;
+
+            container.appendChild(nodeDiv);
+
+            if (node.left) drawNodes(node.left, container, positions);
+            if (node.right) drawNodes(node.right, container, positions);
         }
 
         function resetTree() {
